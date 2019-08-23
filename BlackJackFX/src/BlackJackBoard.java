@@ -5,7 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class BlackJackBoard extends Canvas implements IUpdatable {
+public class BlackJackBoard extends Canvas implements IRenderable {
 	private List<GameObject> boardObjects;
 	
 	public BlackJackBoard() {
@@ -14,14 +14,12 @@ public class BlackJackBoard extends Canvas implements IUpdatable {
 		setWidth(1000);
 		setHeight(500);
 		GraphicsContext gc = getGraphicsContext2D();
-		gc.setFill(Color.DARKGREEN);
-		gc.fillRect(0, 0, getWidth(), getHeight());
+		render(gc);
 	}
 
 	@Override
-	public void update(double gameTimeNano) {
-		for (GameObject go : boardObjects) {
-			go.update(gameTimeNano);
-		}
+	public void render(GraphicsContext gc) {
+		gc.setFill(Color.DARKGREEN);
+		gc.fillRect(0, 0, getWidth(), getHeight());
 	}
 }

@@ -1,7 +1,9 @@
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Card {
+public class Card extends GameObject {
+	
 	public static final double ASPECT_RATIO = 0.7998;
 	public static final double CARD_HEIGHT = 100;
 	public static final double CARD_WIDTH = CARD_HEIGHT * ASPECT_RATIO;
@@ -30,6 +32,12 @@ public class Card {
 	
 	public int getCardValue() {
 		return -1;
+	}
+	
+	@Override
+	public void render(GraphicsContext gc) {
+		gc.drawImage(iv.getImage(), getPosition().getX(), 
+				getPosition().getY(), iv.getFitWidth(), iv.getFitHeight());
 	}
 	
 	@Override

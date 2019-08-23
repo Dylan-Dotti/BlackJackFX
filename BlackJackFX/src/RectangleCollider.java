@@ -2,22 +2,19 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
 public class RectangleCollider {
-	private Point2D position;
-	private int width, height;
+	private Rectangle2D collider;
 	
 	public RectangleCollider(int xPos, int yPos, 
 			int width, int height) {
-		this.position = new Point2D(xPos, yPos);
-		this.width = width;
-		this.height = height;
+		collider = new Rectangle2D(xPos, yPos, width, height);
 	}
 	
 	public Point2D getPosition() {
-		return position;
+		return new Point2D(collider.getMinX(), 
+				collider.getMinY());
 	}
 	
 	public Rectangle2D getCollisionBox() {
-		return new Rectangle2D(position.getX(), 
-				position.getY(), width, height);
+		return collider;
 	}
 }
