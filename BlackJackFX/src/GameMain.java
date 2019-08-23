@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 public class GameMain extends Application {
 	
 	public static void main(String[] args) {
-		Deck deck = new Deck();
-		deck.shuffleDeck();
+		//Deck deck = new Deck();
+		//deck.shuffleDeck();
 		launch(args);
 	}
 

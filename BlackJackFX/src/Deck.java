@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Deck {
+import javafx.scene.canvas.GraphicsContext;
+
+public class Deck implements IRenderable {
 	private List<Card> cards;
 	
 	public Deck() {
@@ -21,6 +23,16 @@ public class Deck {
 	
 	public int getNumCardsRemaining() {
 		return cards.size();
+	}
+	
+	public Card getCard(Rank rank, Suit suit) {
+		for (Card card : cards) {
+			if (card.hasRankAndSuit(rank, suit)) {
+				cards.remove(card);
+				return card;
+			}
+		}
+		return null;
 	}
 	
 	public void shuffleDeck() {
@@ -45,5 +57,10 @@ public class Deck {
 			System.out.println(String.format("%s: %s",
 					i, cards.get(i).toString()));
 		}
+	}
+
+	@Override
+	public void render(GraphicsContext gc) {
+		// TODO Auto-generated method stub
 	}
 }

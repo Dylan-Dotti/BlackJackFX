@@ -34,6 +34,10 @@ public class Card extends GameObject {
 		return -1;
 	}
 	
+	public boolean hasRankAndSuit(Rank rank, Suit suit) {
+		return this.rank == rank && this.suit == suit;
+	}
+	
 	@Override
 	public void render(GraphicsContext gc) {
 		gc.drawImage(iv.getImage(), getPosition().getX(), 
