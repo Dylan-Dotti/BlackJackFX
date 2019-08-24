@@ -5,7 +5,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-//change to extend scene?
 public class BlackJackGame extends Scene {
 	
 	private Canvas gameCanvas;
