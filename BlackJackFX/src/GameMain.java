@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -18,14 +19,11 @@ public class GameMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		BlackJackGame game = new BlackJackGame();
-		
-		Group rootGroup = new Group();
-		rootGroup.getChildren().add(game);
-		Scene scene = new Scene(rootGroup);
+		Pane rootPane = new Pane();
+		BlackJackGame game = new BlackJackGame(rootPane);
 		
 		primaryStage.setTitle("BlackJack");
-		primaryStage.setScene(scene);
+		primaryStage.setScene(game);
 		primaryStage.sizeToScene();
 		primaryStage.setResizable(false);
 		

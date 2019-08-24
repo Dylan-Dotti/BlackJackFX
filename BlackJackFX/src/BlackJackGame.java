@@ -1,10 +1,14 @@
 import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 //change to extend scene?
-public class BlackJackGame extends Canvas {
+public class BlackJackGame extends Scene {
+	
+	private Canvas gameCanvas;
 	
 	private BlackJackBoard mainBoard;
 	private Deck mainDeck;
@@ -13,14 +17,13 @@ public class BlackJackGame extends Canvas {
 	
 	private Card topCard;
 	
-	public BlackJackGame() {
-		super();
-		setWidth(1000);
-		setHeight(500);
+	public BlackJackGame(Pane root) {
+		super(root, 1000, 500);
+		gameCanvas = new Canvas(getWidth(), getHeight());
+		root.getChildren().add(gameCanvas);
 	}
 	
 	public void startGame(Stage primaryStage) {
-		System.out.println("Starting game");
 		mainBoard = new BlackJackBoard(
 				(int)getWidth(), (int)getHeight());
 		mainDeck = new Deck();
@@ -28,6 +31,7 @@ public class BlackJackGame extends Canvas {
 		
 		topCard = mainDeck.drawCard();
 		topCard.setPosition(500, 250);
+		topCard.flipFOrient();
 		
 		timer = new AnimationTimer() {
 			@Override
@@ -54,7 +58,8 @@ public class BlackJackGame extends Canvas {
 	}
 	
 	private void renderObjects() {
-		GraphicsContext gContext = getGraphicsContext2D();
+		GraphicsContext gContext = 
+				gameCanvas.getGraphicsContext2D();
 		mainBoard.render(gContext);
 		mainDeck.render(gContext);
 		topCard.render(gContext);
