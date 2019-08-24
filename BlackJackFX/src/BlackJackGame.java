@@ -1,7 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -9,15 +13,17 @@ public class BlackJackGame extends Scene {
 	
 	private Canvas gameCanvas;
 	
+	private AnimationTimer timer;
+	
 	private BlackJackBoard mainBoard;
 	private Deck mainDeck;
-	
-	private AnimationTimer timer;
+	private List<GameObject> gameObjects;
 	
 	private Card topCard;
 	
 	public BlackJackGame(Pane root) {
 		super(root, 1000, 500);
+		gameObjects = new ArrayList<>();
 		gameCanvas = new Canvas(getWidth(), getHeight());
 		root.getChildren().add(gameCanvas);
 	}
@@ -29,8 +35,12 @@ public class BlackJackGame extends Scene {
 		mainDeck.shuffle();
 		
 		topCard = mainDeck.drawCard();
-		topCard.setPosition(500, 250);
+		topCard.setPosition(500, 250, 1);
 		topCard.flipFOrient();
+		
+		gameObjects.add(mainBoard);
+		gameObjects.add(mainDeck);
+		gameObjects.add(topCard);
 		
 		timer = new AnimationTimer() {
 			@Override
@@ -40,6 +50,9 @@ public class BlackJackGame extends Scene {
 			}
 		};
 		timer.start();
+		
+		this.setOnMouseMoved(e -> OnMouseMoved(e));
+		this.setOnMouseClicked(e -> OnMouseClick(e));
 	}
 	
 	public void pauseGame() {
@@ -59,8 +72,18 @@ public class BlackJackGame extends Scene {
 	private void renderObjects() {
 		GraphicsContext gContext = 
 				gameCanvas.getGraphicsContext2D();
-		mainBoard.render(gContext);
-		mainDeck.render(gContext);
-		topCard.render(gContext);
+		gameObjects.stream().sorted((a, b) -> {
+			return Double.compare(a.getPosition().getZ(),
+					b.getPosition().getZ());
+		}).forEach(rObject -> rObject.render(gContext));
+	}
+	
+	private void OnMouseMoved(MouseEvent mEvent) {
+		
+	}
+	
+	private void OnMouseClick(MouseEvent mEvent) {
+		System.out.println(String.format("Mouse click at (%s, %s)", 
+				mEvent.getX(), mEvent.getY()));
 	}
 }

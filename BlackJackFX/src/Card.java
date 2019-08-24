@@ -74,7 +74,8 @@ public class Card extends GameObject {
 	@Override
 	public void update(long nanoTime) {
 		super.update(nanoTime);
-		setPosition(getPosition().getX() + 1, getPosition().getY());
+		setPosition(getPosition().getX() + 1, 
+				getPosition().getY(), getPosition().getZ());
 	}
 	
 	@Override

@@ -1,39 +1,48 @@
-import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 
 public abstract class GameObject implements IUpdatable, IRenderable {
-	private Point2D position;
+	private Point3D position;
 	private Rectangle2D collider;
 	
 	public GameObject() {
-		position = new Point2D(0, 0);
+		position = new Point3D(0, 0, 0);
 	}
 	
-	public GameObject(Point2D position) {
+	public GameObject(Point3D position) {
 		this.position = position;
 	}
 	
-	public GameObject(Number xPos, Number yPos) {
-		this.position = new Point2D(
-				xPos.doubleValue(), yPos.doubleValue());
+	public GameObject(Number xPos, Number yPos, Number zPos) {
+		this.position = new Point3D(xPos.doubleValue(), 
+				yPos.doubleValue(), zPos.doubleValue());
 	}
 	
-	public Point2D getPosition() {
+	public Point3D getPosition() {
 		return position;
 	}
 	
-	public void setPosition(Number xPos, Number yPos) {
-		position = new Point2D(
-				xPos.doubleValue(), yPos.doubleValue());
+	public void setPosition(Number xPos, Number yPos, Number zPos) {
+		position = new Point3D(xPos.doubleValue(), 
+				yPos.doubleValue(), zPos.doubleValue());
 	}
 	
-	public void setPosition(Point2D newPos) {
-		position = new Point2D(newPos.getX(), newPos.getY());
+	public void setPosition(Point3D newPos) {
+		position = new Point3D(newPos.getX(), 
+				newPos.getY(), newPos.getZ());
+	}
+	
+	public boolean hasCollider() {
+		return collider != null;
 	}
 	
 	public Rectangle2D getCollider() {
 		return collider;
+	}
+	
+	public void setCollider(Rectangle2D collider) {
+		this.collider = collider;
 	}
 
 	@Override
@@ -43,6 +52,4 @@ public abstract class GameObject implements IUpdatable, IRenderable {
 	@Override
 	public void update(long nanoTime) {
 	}
-	
-	
 }
