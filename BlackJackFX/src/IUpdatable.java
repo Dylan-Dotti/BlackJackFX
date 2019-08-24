@@ -1,4 +1,4 @@
 
 public interface IUpdatable {
-	public void update(double gameTimeNano);
+	public void update(long nanoTime);
 }

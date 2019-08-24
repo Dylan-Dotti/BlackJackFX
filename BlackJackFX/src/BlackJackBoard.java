@@ -1,20 +1,29 @@
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class BlackJackBoard extends Canvas implements IRenderable {
-	private List<GameObject> boardObjects;
+public class BlackJackBoard extends GameObject implements IRenderable {
+	private int width, height;
 	
-	public BlackJackBoard() {
+	public BlackJackBoard(int width, int height) {
 		super();
-		boardObjects = new ArrayList<>();
-		setWidth(1000);
-		setHeight(500);
-		GraphicsContext gc = getGraphicsContext2D();
-		render(gc);
+		this.width = width;
+		this.height = height;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 	@Override

@@ -18,15 +18,18 @@ public class GameMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		Group rootGroup = new Group();
-		rootGroup.getChildren().add(new BlackJackBoard());
+		BlackJackGame game = new BlackJackGame();
 		
+		Group rootGroup = new Group();
+		rootGroup.getChildren().add(game);
 		Scene scene = new Scene(rootGroup);
-		//scene.setFill(Color.BLACK);
 		
 		primaryStage.setTitle("BlackJack");
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
+		primaryStage.setResizable(false);
+		
+		game.startGame(primaryStage);
 		primaryStage.show();
 	}
 	

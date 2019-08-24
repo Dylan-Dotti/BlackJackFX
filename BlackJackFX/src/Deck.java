@@ -4,10 +4,11 @@ import java.util.Random;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public class Deck implements IRenderable {
+public class Deck extends GameObject implements IRenderable {
 	private List<Card> cards;
 	
 	public Deck() {
+		super();
 		generateDeck();
 		System.out.println("Deck created");
 	}
@@ -35,7 +36,7 @@ public class Deck implements IRenderable {
 		return null;
 	}
 	
-	public void shuffleDeck() {
+	public void shuffle() {
 		Random rand = new Random();
 		for (int i = 0; i < cards.size(); i++) {
 			int randIndex = rand.nextInt(cards.size());
@@ -46,10 +47,11 @@ public class Deck implements IRenderable {
 	}
 	
 	public Card drawCard() {
-		if (cards.isEmpty()) {
-			throw new ArrayIndexOutOfBoundsException("Deck is empty");
-		}
-		return cards.remove(0);
+		return cards.isEmpty() ? null : cards.remove(0);
+	}
+	
+	public Card peekTopCard() {
+		return cards.isEmpty() ? null : cards.get(0);
 	}
 	
 	public void printDeck() {
@@ -61,6 +63,11 @@ public class Deck implements IRenderable {
 
 	@Override
 	public void render(GraphicsContext gc) {
-		// TODO Auto-generated method stub
+		Card topCard = peekTopCard();
+		if (topCard != null) {
+			gc.drawImage(topCard.getRenderImageView().getImage(), 
+					getPosition().getX(), getPosition().getY(), 
+					Card.CARD_WIDTH, Card.CARD_HEIGHT);
+		}
 	}
 }
