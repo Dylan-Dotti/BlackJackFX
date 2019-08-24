@@ -11,8 +11,6 @@ import javafx.stage.Stage;
 public class GameMain extends Application {
 	
 	public static void main(String[] args) {
-		//Deck deck = new Deck();
-		//deck.shuffleDeck();
 		launch(args);
 	}
 
@@ -34,7 +32,8 @@ public class GameMain extends Application {
 	}
 	
 	private ImageView loadCard(Rank rank, Suit suit) {
-		String imageURL = String.format("file:img/%s/%s_%s.png", suit, rank, suit);
+		String imageURL = String.format(
+				"file:img/%s/%s_%s.png", suit, rank, suit);
 		System.out.println("Loading image: " + imageURL);
 		return new ImageView(new Image(imageURL));
 	}
