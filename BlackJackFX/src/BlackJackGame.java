@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -24,8 +25,26 @@ public class BlackJackGame extends Scene {
 	public BlackJackGame(Pane root) {
 		super(root, 1000, 500);
 		gameObjects = new ArrayList<>();
+		
 		gameCanvas = new Canvas(getWidth(), getHeight());
 		root.getChildren().add(gameCanvas);
+		
+		Button hitButton = new Button("Hit");
+		hitButton.setPrefSize(100, 30);
+		hitButton.setLayoutX(440 - 
+				hitButton.getPrefWidth() / 2);
+		System.out.println(hitButton.getLayoutX());
+		hitButton.setLayoutY(450.0 - 
+				hitButton.getPrefHeight() / 2);
+		root.getChildren().add(hitButton);
+		
+		Button standButton = new Button("Stand");
+		standButton.setPrefSize(100, 30);
+		standButton.setLayoutX(560.0 -
+				standButton.getPrefWidth() / 2.0);
+		standButton.setLayoutY(450.0 -
+				standButton.getPrefHeight() / 2.0);
+		root.getChildren().add(standButton);
 	}
 	
 	public void startGame(Stage primaryStage) {
