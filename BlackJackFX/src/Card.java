@@ -74,15 +74,15 @@ public class Card extends GameObject {
 	@Override
 	public void update(long nanoTime) {
 		super.update(nanoTime);
-		setPosition(getPosition().getX() + 1, 
-				getPosition().getY(), getPosition().getZ());
 	}
 	
 	@Override
 	public void render(GraphicsContext gc) {
-		gc.drawImage(getRenderImageView().getImage(), 
-				getPosition().getX(), getPosition().getY(), 
-				frontIV.getFitWidth(), frontIV.getFitHeight());
+		ImageView renderIV = getRenderImageView();
+		gc.drawImage(renderIV.getImage(), 
+				getPosition().getX() - renderIV.getFitWidth() / 2,
+				getPosition().getY() - renderIV.getFitWidth() / 2, 
+				renderIV.getFitWidth(), renderIV.getFitHeight());
 	}
 	
 	@Override
@@ -101,7 +101,6 @@ public class Card extends GameObject {
 	
 	private static void loadCardBackImage() {
 		backIV = new ImageView(new Image("file:img/card_back_2.jpg"));
-		System.out.println("Card back: " + backIV.getImage());
 		backIV.setFitWidth(CARD_WIDTH);
 		backIV.setFitHeight(CARD_HEIGHT);
 	}

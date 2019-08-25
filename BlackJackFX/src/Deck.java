@@ -2,22 +2,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.geometry.Point3D;
 import javafx.scene.canvas.GraphicsContext;
 
 public class Deck extends GameObject implements IRenderable {
 	private List<Card> cards;
 	
 	public Deck() {
-		super();
+		this(new Point3D(0, 0, 0));
+	}
+	
+	public Deck(Point3D position) {
+		super(position);
 		generateDeck();
 		System.out.println("Deck created");
+	}
+	
+	public Deck(Number xPos, Number yPos, Number zPos) {
+		this(new Point3D(xPos.doubleValue(), 
+				yPos.doubleValue(), zPos.doubleValue()));
 	}
 	
 	public void generateDeck() {
 		cards = new ArrayList<>(52);
 		for (Suit suit : Suit.values()) {
 			for (Rank rank : Rank.values()) {
-				cards.add(new Card(rank, suit));
+				Card card = new Card(rank, suit);
+				card.setPosition(getPosition().getX(), 
+						getPosition().getY(), getPosition().getZ() + 
+						0.1 * (cards.size() + 1));
+				cards.add(card);
 			}
 		}
 	}
@@ -65,9 +79,7 @@ public class Deck extends GameObject implements IRenderable {
 	public void render(GraphicsContext gc) {
 		Card topCard = peekTopCard();
 		if (topCard != null) {
-			gc.drawImage(topCard.getRenderImageView().getImage(), 
-					getPosition().getX(), getPosition().getY(), 
-					Card.CARD_WIDTH, Card.CARD_HEIGHT);
+			topCard.render(gc);
 		}
 	}
 }
