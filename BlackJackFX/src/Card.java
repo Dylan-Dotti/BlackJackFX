@@ -1,3 +1,5 @@
+import java.util.List;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -63,8 +65,35 @@ public class Card extends GameObject {
 				frontIV : backIV;
 	}
 	
-	public int getCardValue() {
-		return -1;
+	public int getCardValue(List<Card> handCards) {
+		switch(rank) {
+		case Ace:
+			//TODO
+			return 11;
+		case Two:
+			return 2;
+		case Three:
+			return 3;
+		case Four:
+			return 4;
+		case Five:
+			return 5;
+		case Six:
+			return 6;
+		case Seven:
+			return 7;
+		case Eight:
+			return 8;
+		case Nine:
+			return 9;
+		case Ten:
+		case Jack:
+		case Queen:
+		case King:
+			return 10;
+		default:
+			return -1;
+		}
 	}
 	
 	public boolean hasRankAndSuit(Rank rank, Suit suit) {
@@ -78,6 +107,7 @@ public class Card extends GameObject {
 	
 	@Override
 	public void render(GraphicsContext gc) {
+		super.render(gc);
 		ImageView renderIV = getRenderImageView();
 		gc.drawImage(renderIV.getImage(), 
 				getPosition().getX() - renderIV.getFitWidth() / 2,

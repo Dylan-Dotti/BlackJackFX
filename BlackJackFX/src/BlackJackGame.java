@@ -13,7 +13,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class BlackJackGame extends Scene {
-	
 	private Canvas gameCanvas;
 	private List<GameObject> gameObjects;
 	private AnimationTimer timer;
@@ -22,7 +21,8 @@ public class BlackJackGame extends Scene {
 	private Button standButton;
 	
 	private Deck mainDeck;
-	private Hand playerHand;
+	private Player player;
+	private Dealer dealer;
 	
 	public BlackJackGame(Pane root) {
 		super(root, 1000, 500);
@@ -56,12 +56,11 @@ public class BlackJackGame extends Scene {
 		mainDeck = new Deck(950, 50, 1);
 		mainDeck.shuffle();
 		
-		playerHand = new Hand(new Point3D(
-				250, 300, 1));
+		player = new Player();
 		
 		gameObjects.add(mainBoard);
 		gameObjects.add(mainDeck);
-		gameObjects.add(playerHand);
+		gameObjects.add(player);
 		
 		timer = new AnimationTimer() {
 			@Override
@@ -74,14 +73,6 @@ public class BlackJackGame extends Scene {
 		
 		this.setOnMouseMoved(e -> OnMouseMoved(e));
 		this.setOnMouseClicked(e -> OnMouseClick(e));
-	}
-	
-	public void pauseGame() {
-		timer.stop();
-	}
-	
-	public void resumeGame() {
-		timer.start();
 	}
 	
 	private void updateObjects(long nanoTime) {
@@ -98,7 +89,7 @@ public class BlackJackGame extends Scene {
 	}
 	
 	public void onHitButtonClicked(ActionEvent aEvent) {
-		playerHand.addCard(mainDeck.drawCard(),
+		player.addCardToHand(mainDeck.drawCard(),
 				Card.FaceOrientation.FaceUp);
 	}
 	

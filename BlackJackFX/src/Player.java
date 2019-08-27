@@ -1,18 +1,20 @@
-import java.util.ArrayList;
-import java.util.List;
+import javafx.geometry.Point3D;
 
-public class Player {
-	private List<Card> activeCards;
+public class Player extends GameObject {
+	private Hand hand;
 	
 	public Player() {
-		activeCards = new ArrayList<>(6);
+		setPosition(250, 300, 1);
+		hand = new Hand(new Point3D(250, 300, 1));
+		addChildObject(hand);
 	}
 	
-	public boolean addActiveCard(Card card) {
-		return activeCards.add(card);
+	public boolean addCardToHand(Card card,
+			Card.FaceOrientation fOrient) {
+		return hand.addCard(card, fOrient);
 	}
 	
-	public boolean removeActiveCard(Card card) {
-		return activeCards.remove(card);
+	public boolean removeCardFromHand(Card card) {
+		return hand.removeCard(card);
 	}
 }

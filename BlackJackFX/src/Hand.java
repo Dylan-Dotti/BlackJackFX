@@ -40,22 +40,28 @@ public class Hand extends GameObject {
 			card.setPosition(xPos - Card.CARD_WIDTH / 2,
 					yPos - Card.CARD_HEIGHT / 2, zPos);
 			card.setFOrient(fOrient);
+			addChildObject(card);
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean removeCard(Card card) {
-		return handCards.remove(card);
+		if (handCards.remove(card)) {
+			return removeChildObject(card);
+		}
+		return false;
 	}
 	
 	public void removeAllCards() {
 		handCards.clear();
 	}
 	
-	@Override
-	public void render(GraphicsContext gc) {
-		super.render(gc);
-		handCards.forEach(c -> c.render(gc));
+	public int getHandValue() {
+		int handValue = 0;
+		for (Card card : handCards) {
+			handValue += card.getCardValue(handCards);
+		}
+		return handValue;
 	}
 }
