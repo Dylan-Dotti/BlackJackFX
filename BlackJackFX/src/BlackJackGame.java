@@ -3,13 +3,14 @@ import java.util.List;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
-import javafx.geometry.Point3D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class BlackJackGame extends Scene {
@@ -20,9 +21,12 @@ public class BlackJackGame extends Scene {
 	private Button hitButton;
 	private Button standButton;
 	
+	private Label playerHandValueLabel;
+	private Label dealerHandValueLabel;
+	
 	private Deck mainDeck;
 	private Player player;
-	private Dealer dealer;
+	private Player dealer;
 	
 	public BlackJackGame(Pane root) {
 		super(root, 1000, 500);
@@ -56,11 +60,21 @@ public class BlackJackGame extends Scene {
 		mainDeck = new Deck(950, 50, 1);
 		mainDeck.shuffle();
 		
-		player = new Player();
+		player = new Player(250, 350, 1);
+		dealer = new Player(250, 200, 1);
+		dealer.addCardToHand(mainDeck.drawCard(), 
+				Card.FaceOrientation.FaceDown);
+		player.addCardToHand(mainDeck.drawCard(),
+				Card.FaceOrientation.FaceUp);
+		dealer.addCardToHand(mainDeck.drawCard(),
+				Card.FaceOrientation.FaceUp);
+		player.addCardToHand(mainDeck.drawCard(),
+				Card.FaceOrientation.FaceUp);
 		
 		gameObjects.add(mainBoard);
 		gameObjects.add(mainDeck);
 		gameObjects.add(player);
+		gameObjects.add(dealer);
 		
 		timer = new AnimationTimer() {
 			@Override
@@ -77,6 +91,10 @@ public class BlackJackGame extends Scene {
 	
 	private void updateObjects(long nanoTime) {
 		gameObjects.forEach(go -> go.update(nanoTime));
+		playerHandValueLabel = new Label("Player: " + 
+				player.getHand().getHandValue());
+		dealerHandValueLabel = new Label("Dealer: " +
+				dealer.getHand().getHandValue());
 	}
 	
 	private void renderObjects() {
@@ -86,6 +104,10 @@ public class BlackJackGame extends Scene {
 			return Double.compare(a.getPosition().getZ(),
 					b.getPosition().getZ());
 		}).forEach(rObject -> rObject.render(gContext));
+		// draw player hand value
+		gContext.setStroke(Color.WHITE);
+		gContext.strokeText(playerHandValueLabel.getText(), 475, 400);
+		gContext.strokeText(dealerHandValueLabel.getText(), 475, 50);
 	}
 	
 	public void onHitButtonClicked(ActionEvent aEvent) {
@@ -94,6 +116,21 @@ public class BlackJackGame extends Scene {
 	}
 	
 	public void onStandButtonClicked(ActionEvent aEvent) {
+		// play dealer
+		hitButton.setDisable(true);
+		standButton.setDisable(true);
+		new Thread(() -> {
+			try {
+				dealer.getHand().getCard(0).flipFOrient();
+				while (dealer.getHand().getHandValue() < 17) {
+					Thread.sleep(1500);
+					dealer.addCardToHand(mainDeck.drawCard(),
+							Card.FaceOrientation.FaceUp);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}).start();
 		
 	}
 	

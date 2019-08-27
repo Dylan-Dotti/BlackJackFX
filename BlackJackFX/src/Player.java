@@ -4,9 +4,22 @@ public class Player extends GameObject {
 	private Hand hand;
 	
 	public Player() {
-		setPosition(250, 300, 1);
-		hand = new Hand(new Point3D(250, 300, 1));
+		this(new Point3D(0, 0, 1));
+	}
+	
+	public Player(Number xPos, Number yPos, Number zPos) {
+		this(new Point3D(xPos.doubleValue(), 
+				yPos.doubleValue(), zPos.doubleValue()));
+	}
+	
+	public Player(Point3D position) {
+		setPosition(position);
+		hand = new Hand(getPosition());
 		addChildObject(hand);
+	}
+	
+	public Hand getHand() {
+		return hand;
 	}
 	
 	public boolean addCardToHand(Card card,

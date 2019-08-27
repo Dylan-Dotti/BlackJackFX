@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -68,7 +69,15 @@ public class Card extends GameObject {
 	public int getCardValue(List<Card> handCards) {
 		switch(rank) {
 		case Ace:
-			//TODO
+			List<Card> aces = handCards.stream().
+				filter(c -> c.rank == Rank.Ace).
+				collect(Collectors.toList());
+			List<Card> nonAces = handCards.stream().
+				filter(c -> c.rank != Rank.Ace).
+				collect(Collectors.toList());
+			int nonAcesValue = nonAces.stream().mapToInt(
+					c -> c.getCardValue(nonAces)).sum();
+			// calculate all possible combinations
 			return 11;
 		case Two:
 			return 2;

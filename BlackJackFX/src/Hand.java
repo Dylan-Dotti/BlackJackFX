@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.geometry.Point3D;
-import javafx.scene.canvas.GraphicsContext;
 
 public class Hand extends GameObject {
 	
@@ -24,6 +23,10 @@ public class Hand extends GameObject {
 		handCards = new ArrayList<>();
 		spacing = 30;
 		this.growDirection = growDirection;
+	}
+	
+	public Card getCard(int index) {
+		return handCards.get(index);
 	}
 	
 	public boolean addCard(Card card, Card.FaceOrientation fOrient) {
@@ -60,7 +63,9 @@ public class Hand extends GameObject {
 	public int getHandValue() {
 		int handValue = 0;
 		for (Card card : handCards) {
-			handValue += card.getCardValue(handCards);
+			if (card.getFOrient() == Card.FaceOrientation.FaceUp) {
+				handValue += card.getCardValue(handCards);
+			}
 		}
 		return handValue;
 	}
