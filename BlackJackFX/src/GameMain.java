@@ -23,7 +23,7 @@ public class GameMain extends Application {
 		primaryStage.sizeToScene();
 		primaryStage.setResizable(false);
 		
-		game.startGame(primaryStage);
+		game.startGame();
 		primaryStage.show();
 	}
 	

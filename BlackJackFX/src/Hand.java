@@ -21,7 +21,7 @@ public class Hand extends GameObject {
 	public Hand(Point3D position, Direction growDirection) {
 		super(position);
 		handCards = new ArrayList<>();
-		spacing = 30;
+		spacing = 40;
 		this.growDirection = growDirection;
 	}
 	

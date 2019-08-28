@@ -28,6 +28,8 @@ public class BlackJackGame extends Scene {
 	private Player player;
 	private Player dealer;
 	
+	private boolean gameComplete;
+	
 	public BlackJackGame(Pane root) {
 		super(root, 1000, 500);
 		gameObjects = new ArrayList<>();
@@ -54,14 +56,15 @@ public class BlackJackGame extends Scene {
 		root.getChildren().add(standButton);
 	}
 	
-	public void startGame(Stage primaryStage) {
+	public void startGame() {
+		gameComplete = false;
 		BlackJackBoard mainBoard = new BlackJackBoard(
 				(int)getWidth(), (int)getHeight());
 		mainDeck = new Deck(950, 50, 1);
 		mainDeck.shuffle();
 		
-		player = new Player(250, 350, 1);
-		dealer = new Player(250, 200, 1);
+		player = new Player(450, 350, 1);
+		dealer = new Player(450, 200, 1);
 		dealer.addCardToHand(mainDeck.drawCard(), 
 				Card.FaceOrientation.FaceDown);
 		player.addCardToHand(mainDeck.drawCard(),
@@ -71,6 +74,7 @@ public class BlackJackGame extends Scene {
 		player.addCardToHand(mainDeck.drawCard(),
 				Card.FaceOrientation.FaceUp);
 		
+		gameObjects.clear();
 		gameObjects.add(mainBoard);
 		gameObjects.add(mainDeck);
 		gameObjects.add(player);
@@ -84,12 +88,19 @@ public class BlackJackGame extends Scene {
 			}
 		};
 		timer.start();
-		
-		this.setOnMouseMoved(e -> OnMouseMoved(e));
-		this.setOnMouseClicked(e -> OnMouseClick(e));
+		hitButton.setDisable(false);
+		standButton.setDisable(false);
+	}
+	
+	public void restartGame() {
+		startGame();
 	}
 	
 	private void updateObjects(long nanoTime) {
+		if (gameComplete) {
+			gameComplete = false;
+			displayOutcomeMessage();
+		}
 		gameObjects.forEach(go -> go.update(nanoTime));
 		playerHandValueLabel = new Label("Player: " + 
 				player.getHand().getHandValue());
@@ -107,36 +118,68 @@ public class BlackJackGame extends Scene {
 		// draw player hand value
 		gContext.setStroke(Color.WHITE);
 		gContext.strokeText(playerHandValueLabel.getText(), 475, 400);
-		gContext.strokeText(dealerHandValueLabel.getText(), 475, 50);
+		gContext.strokeText(dealerHandValueLabel.getText(), 475, 75);
 	}
 	
 	public void onHitButtonClicked(ActionEvent aEvent) {
 		player.addCardToHand(mainDeck.drawCard(),
 				Card.FaceOrientation.FaceUp);
+		if (player.getHand().getHandValue() > 21) {
+			hitButton.setDisable(true);
+			standButton.setDisable(true);
+			displayOutcomeMessage();
+		}
 	}
 	
 	public void onStandButtonClicked(ActionEvent aEvent) {
 		// play dealer
 		hitButton.setDisable(true);
 		standButton.setDisable(true);
-		new Thread(() -> {
+		Thread dealerPlayThread = new Thread(() -> {
 			try {
 				dealer.getHand().getCard(0).flipFOrient();
 				while (dealer.getHand().getHandValue() < 17) {
-					Thread.sleep(1500);
+					Thread.sleep(1000);
 					dealer.addCardToHand(mainDeck.drawCard(),
 							Card.FaceOrientation.FaceUp);
 				}
-			} catch (InterruptedException e) {
+				//can't call in separate thread?
+				gameComplete = true;
+			}
+			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}).start();
+		});
+		dealerPlayThread.start();
 		
 	}
 	
-	private void OnMouseMoved(MouseEvent mEvent) {
-	}
-	
-	private void OnMouseClick(MouseEvent mEvent) {
+	private void displayOutcomeMessage() {
+		int playerHandValue = player.getHand().getHandValue();
+		int dealerHandValue = dealer.getHand().getHandValue();
+		if (playerHandValue > 21) {
+			BlackJackAlertBox.display("Outcome", "Player bust",
+					() -> restartGame());
+		}
+		else if (dealerHandValue > 21) {
+			BlackJackAlertBox.display("Outcome", "Dealer bust",
+					() -> restartGame());
+		}
+		else if (playerHandValue > dealerHandValue) {
+			BlackJackAlertBox.display("Outcome", 
+					String.format("Player wins %s to %s", 
+							playerHandValue, dealerHandValue),
+					() -> restartGame());
+		}
+		else if (playerHandValue < dealerHandValue) {
+			BlackJackAlertBox.display("Outcome", 
+					String.format("Dealer wins %s to %s", 
+							dealerHandValue, playerHandValue),
+					() -> restartGame());
+		}
+		else if (playerHandValue == dealerHandValue) {
+			BlackJackAlertBox.display("Outcome", "Push",
+					() -> restartGame());
+		}
 	}
 }
