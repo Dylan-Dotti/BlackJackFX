@@ -1,6 +1,3 @@
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -66,52 +63,8 @@ public class Card extends GameObject {
 				frontIV : backIV;
 	}
 	
-	public int getCardValue(List<Card> handCards) {
-		switch(rank) {
-		case Ace:
-			List<Card> aces = handCards.stream().
-				filter(c -> c.rank == Rank.Ace).
-				collect(Collectors.toList());
-			List<Card> nonAces = handCards.stream().
-				filter(c -> c.rank != Rank.Ace).
-				collect(Collectors.toList());
-			int nonAcesValue = nonAces.stream().mapToInt(
-					c -> c.getCardValue(nonAces)).sum();
-			// calculate all possible combinations
-			return 11;
-		case Two:
-			return 2;
-		case Three:
-			return 3;
-		case Four:
-			return 4;
-		case Five:
-			return 5;
-		case Six:
-			return 6;
-		case Seven:
-			return 7;
-		case Eight:
-			return 8;
-		case Nine:
-			return 9;
-		case Ten:
-		case Jack:
-		case Queen:
-		case King:
-			return 10;
-		default:
-			return -1;
-		}
-	}
-	
 	public boolean hasRankAndSuit(Rank rank, Suit suit) {
 		return this.rank == rank && this.suit == suit;
-	}
-	
-	@Override
-	public void update(long nanoTime) {
-		super.update(nanoTime);
 	}
 	
 	@Override

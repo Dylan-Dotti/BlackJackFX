@@ -27,6 +27,8 @@ public class BlackJackAlertBox {
 		
 		Scene scene = new Scene(root);
 		window.setScene(scene);
+		window.sizeToScene();
+		window.setResizable(false);
 		window.show();
 	}
 }
